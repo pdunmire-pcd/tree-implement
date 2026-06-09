@@ -1,3 +1,7 @@
+import java.util.Stack;
+import java.util.Queue;
+import java.util.LinkedList;
+
 public class Traversal {
   public static void main(String[]args){
     TreeNode<Integer> root= new TreeNode<> (10);
@@ -32,8 +36,23 @@ public class Traversal {
     //postorder(stringRoot);
     //inorder(stringRoot);
 
-    System.out.println(countNodes(stringRoot));
+    TreeNode<Integer> megaRoot = new TreeNode<>(1);
+    // while (megaRoot.data <= 100000){
+    //   megaRoot.right = new TreeNode<>(megaRoot.data + 1);
+    //   megaRoot = megaRoot.right;
+    // }
+    TreeNode<Integer> current = megaRoot;
+    for(int i = 2; i <= 100_000; i++){
+      current.right = new TreeNode<>(i);
+      current = current.right;
+    }
 
+    // System.out.println(countNodes(stringRoot));
+
+    //preorder(megaRoot);
+
+    //preorderIterative(megaRoot);
+    levelOrder(root);
   }
 
   public static int countNodes(TreeNode<?> current){
@@ -53,6 +72,35 @@ public class Traversal {
     printGreaterThan(current.left, threshold);
     printGreaterThan(current.right, threshold);
   }
+
+  public static void preorderIterative(TreeNode<?> root){
+    Stack<TreeNode<?>> stack = new Stack<>();
+
+    stack.push(root);
+
+    while (!stack.isEmpty()){
+      TreeNode<?> current = stack.pop();
+      if (current == null) continue;
+      // do something
+      System.out.println(current.data);
+      stack.push(current.right);
+      stack.push(current.left);
+    }
+  }
+
+  public static void levelOrder(TreeNode<?> root){
+    Queue<TreeNode<?>> queue = new LinkedList<>();
+    queue.offer(root);
+
+    while (!queue.isEmpty()){
+      TreeNode<?> current = queue.remove();
+      if(current == null) continue;
+      System.out.println(current.data);
+      queue.offer(current.left);
+      queue.offer(current.right);
+    }
+  }
+
 
   public static void preorder(TreeNode<?> current){
     if(current == null)return;
